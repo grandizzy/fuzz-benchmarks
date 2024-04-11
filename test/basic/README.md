@@ -13,7 +13,6 @@ Unique instructions: 208
 Unique codehashes: 1
 Corpus size: 1
 Seed: 7154976317742601675
-
 ```
 
 - Foundry (`forge test --mc ArrayMutation`)
@@ -40,7 +39,6 @@ Unique instructions: 208
 Unique codehashes: 1
 Corpus size: 1
 Seed: 7154976317742601675
-
 ```
 
 - Foundry (`forge test --mc DArrayMutation`)
@@ -80,7 +78,6 @@ Unique instructions: 207
 Unique codehashes: 1
 Corpus size: 1
 Seed: 5007364529916031582
-
 ```
 
 - Foundry (`forge test --mc PushLong`)
