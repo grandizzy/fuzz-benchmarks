@@ -91,7 +91,7 @@ Encountered 1 failing test in test/values/constants3.t.sol:ConstantsAddressTest
  invariant_found_sender() (runs: 256, calls: 3836, reverts: 0)
 ```
 
-#### :no_entry_sign: Create
+#### :warning: Create
 
 - Echidna (`echidna --contract C tests/solidity/values/create.sol`)
 
@@ -112,12 +112,14 @@ Seed: 4314082609132092580
 
 - Foundry (`forge test --mc CreateTest`)
 
-```
-[PASS] invariant_state() (runs: 256, calls: 3840, reverts: 0)
-Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 396.87ms (394.89ms CPU time)
-```
+Note:  
+configs to set depth to 1000 and to limit address fuzzed dictionary to 1 needed
 
-Note: sequence is found when limiting number of fuzzedd addresses by using `max_calldata_fuzz_dictionary_addresses = 1`
+```
+    /// forge-config: default.invariant.depth = 1000
+    /// forge-config: default.max_calldata_fuzz_dictionary_addresses = 1
+
+```
 
 ```
 Failing tests:
@@ -345,7 +347,7 @@ Note: suitable for fixtures feature
 Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 366.48ms (364.12ms CPU time)
 ```
 
-#### :no_entry_sign: Small values
+#### :white_check_mark: Small values
 
 - Echidna (`echidna tests/solidity/values/smallValues.sol`)
 
@@ -364,12 +366,13 @@ Seed: 4338233787221587175
 
 - Foundry (`forge test --mc SmallValuesTest`)
 
-```
-[PASS] invariant_find_small() (runs: 256, calls: 3840, reverts: 0)
-Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 366.48ms (364.12ms CPU time)
-```
+Note:  
+configs to set depth to 1000 needed
 
-Note: passing with `depth = 1000` setting
+```
+    /// forge-config: default.invariant.depth = 1000
+
+```
 
 ```
 [FAIL. Reason: assertion failed]

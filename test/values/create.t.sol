@@ -24,7 +24,7 @@ contract C {
         if ((A(x) == b) && (b != A(address(0x0)))) state2 = false;
     }
 
-    function getState() public returns (bool) {
+    function getState() public view returns (bool) {
         return state || state2;
     }
 }
@@ -36,6 +36,8 @@ contract CreateTest is Test {
         create = new C();
     }
 
+    /// forge-config: default.invariant.depth = 1000
+    /// forge-config: default.max_calldata_fuzz_dictionary_addresses = 1
     function invariant_state() public {
         assertTrue(create.getState());
     }

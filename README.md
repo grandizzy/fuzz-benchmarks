@@ -4,4 +4,6 @@
 
 ### [Basic](test/basic/README.md)
 
+### [Research](test/research/README.md)
+
 ### [Values](test/values/README.md)

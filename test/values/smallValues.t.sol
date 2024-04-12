@@ -10,7 +10,7 @@ contract SmallValues {
         n = int256(newn);
     }
 
-    function getN() public returns (int256) {
+    function getN() public view returns (int256) {
         return n;
     }
 }
@@ -22,7 +22,8 @@ contract SmallValuesTest is Test {
         target = new SmallValues();
     }
 
-    function invariant_find_small() public {
+    /// forge-config: default.invariant.depth = 1000
+    function invariant_find_small() public view {
         assertTrue((target.getN() - 256) != 31);
     }
 }
