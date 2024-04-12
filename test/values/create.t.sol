@@ -38,7 +38,7 @@ contract CreateTest is Test {
 
     /// forge-config: default.invariant.depth = 1000
     /// forge-config: default.max_calldata_fuzz_dictionary_addresses = 1
-    function invariant_state() public {
+    function invariant_state() public view {
         assertTrue(create.getState());
     }
 }

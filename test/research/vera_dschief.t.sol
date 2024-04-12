@@ -58,24 +58,64 @@ contract SimpleDSChief {
     function sub(uint256 x, uint256 y) internal pure returns (uint256 z) {
         require((z = x - y) <= x);
     }
-
-    function checkAnInvariant() public view {
-        bytes32 senderSlate = votes[msg.sender];
-        address option = slates[senderSlate];
-        uint256 senderDeposit = deposits[msg.sender];
-
-        assert(approvals[option] >= senderDeposit);
-    }
 }
 
 contract SimpleDSChiefTest is Test {
     SimpleDSChief dsChief;
+    address alice = makeAddr("alice");
+    address bob = makeAddr("bob");
 
     function setUp() public {
         dsChief = new SimpleDSChief();
+
+        targetSender(alice);
+        targetSender(bob);
     }
 
+    /// forge-config: default.invariant.runs = 1000
     function invariant_check() public view {
-        dsChief.checkAnInvariant();
+        assertTrue(getInvariant(alice));
+        assertTrue(getInvariant(bob));
+    }
+
+    function getInvariant(address sender) public view returns (bool) {
+        bytes32 senderSlate = dsChief.votes(sender);
+        address option = dsChief.slates(senderSlate);
+        uint256 senderDeposit = dsChief.deposits(sender);
+
+        return (dsChief.approvals(option) >= senderDeposit);
+    }
+}
+
+contract SimplifiedDSChief {
+    mapping(bytes32 => address) public slates;
+    bool everMatched = false;
+
+    function etch(address yay) public returns (bytes32 slate) {
+        bytes32 hash = keccak256(abi.encodePacked(yay));
+        slates[hash] = yay;
+        return hash;
+    }
+
+    function lookup(bytes32 slate, address nay) public {
+        if (nay != address(0x0)) {
+            everMatched = slates[slate] == nay;
+        }
+    }
+
+    function wasEverMatched() public view returns (bool) {
+        return everMatched;
+    }
+}
+
+contract SimplifiedDSChiefCheckTest is Test {
+    SimplifiedDSChief dsChief;
+
+    function setUp() public {
+        dsChief = new SimplifiedDSChief();
+    }
+
+    function invariant_check_ever_matched() public view {
+        assertFalse(dsChief.wasEverMatched());
     }
 }
