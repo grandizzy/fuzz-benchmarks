@@ -39,6 +39,89 @@ Encountered 1 failing test in test/research/bran_bar.t.sol:BranBarTest
 
 ```
 
+#### :white_check_mark: Harvey baz
+
+- Echidna (`echidna tests/solidity/research/harvey_baz.sol`)
+
+```
+echidna_all_states: failed!💥  
+  Call sequence:
+    Baz.baz(42,3,-3)
+    Baz.baz(0,1,0)
+    Baz.baz(0,0,0)
+    Baz.baz(0,0,42)
+    Baz.baz(11396323331869472339396296016851060375,3,-3)
+
+Traces: 
+
+Unique instructions: 424
+Unique codehashes: 1
+Corpus size: 3
+Seed: 4939788057208767017
+```
+
+- Foundry (`forge test --mc HarveyBazTest`)
+
+Note:  
+configs to set depth to 5000 to catch failing sequence needed
+
+```
+    /// forge-config: default.invariant.depth = 5000
+```
+
+```
+Failing tests:
+Encountered 1 failing test in test/research/harvey_baz.t.sol:HarveyBazTest
+[FAIL. Reason: assertion failed]
+        [Sequence]
+                sender=0x0000000000000000000000000000000000000040 addr=[test/research/harvey_baz.t.sol:HarveyBaz]0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f calldata=baz(int256,int256,int256) args=[420, 16, 3210]
+                sender=0x00000000000000000000000000000000000000db addr=[test/research/harvey_baz.t.sol:HarveyBaz]0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f calldata=baz(int256,int256,int256) args=[-466460595087503155870099225024165749863 [-4.664e38], -7, 2]
+                sender=0x0000000000000000000000000000000000000145 addr=[test/research/harvey_baz.t.sol:HarveyBaz]0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f calldata=baz(int256,int256,int256) args=[3, 57896044618658097711785492504343953926634992332820282019728792003956564819967 [5.789e76], -57896044618658097711785492504343953926634992332820282019728792003956564819968 [-5.789e76]]
+                sender=0x0000000000000000000000000000000000000997 addr=[test/research/harvey_baz.t.sol:HarveyBaz]0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f calldata=baz(int256,int256,int256) args=[71036242043089691939034831705338383692758256764183533723684721172464 [7.103e67], 7847968503579 [7.847e12], 0]
+                sender=0x00000000000000000000000000000000fefFFfff addr=[test/research/harvey_baz.t.sol:HarveyBaz]0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f calldata=baz(int256,int256,int256) args=[42, 74274746694490829609903699605539430845152191300780760184 [7.427e55], -57896044618658097711785492504343953926634992332820282019728792003956564819967 [-5.789e76]]
+ invariant_check() (runs: 256, calls: 1279512, reverts: 142621)
+```
+
+#### :white_check_mark: Harvey foo
+
+- Echidna (`echidna tests/solidity/research/harvey_baz.sol`)
+
+```
+echidna_assert: failed!💥  
+  Call sequence:
+    Foo.SetY(41)
+    Foo.CopyY()
+    Foo.IncX()
+    Foo.Bar()
+
+Traces: 
+
+Unique instructions: 311
+Unique codehashes: 1
+Corpus size: 3
+Seed: 5445128997940809361
+```
+
+- Foundry (`forge test --mc HarveyFooTest`)
+
+Note:  
+configs to set depth to 5000 to catch failing sequence needed
+
+```
+    /// forge-config: default.invariant.depth = 5000
+```
+
+```
+Failing tests:
+Encountered 1 failing test in test/research/harvey_foo.t.sol:HarveyFooTest
+[FAIL. Reason: assertion failed]
+        [Sequence]
+                sender=0x0000000000000000000000000000006970667357 addr=[test/research/harvey_foo.t.sol:HarveyFoo]0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f calldata=SetY(int256) args=[42]
+                sender=0x0000000000000000000000000000006970667357 addr=[test/research/harvey_foo.t.sol:HarveyFoo]0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f calldata=CopyY() args=[]
+                sender=0xAE82eF90772D777FFc4de76cE0003b9768626F1b addr=[test/research/harvey_foo.t.sol:HarveyFoo]0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f calldata=Bar() args=[]
+ invariant_check() (runs: 256, calls: 1275116, reverts: 11200)
+```
+
 #### :no_entry_sign: DSChief
 
 - Echidna (`echidna --test-mode assertion tests/solidity/research/vera_dschief.sol`)
