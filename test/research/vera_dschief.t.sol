@@ -9,6 +9,8 @@ contract SimpleDSChief {
     mapping(address => uint256) public approvals;
     mapping(address => uint256) public deposits;
 
+    bool public hacked = false;
+
     function lock(uint256 wad) public {
         deposits[msg.sender] = add(deposits[msg.sender], wad);
         addWeight(wad, votes[msg.sender]);
@@ -53,35 +55,70 @@ contract SimpleDSChief {
     function sub(uint256 x, uint256 y) internal pure returns (uint256 z) {
         require((z = x - y) <= x);
     }
+
+    function checkInvariant() public {
+        bytes32 senderSlate = votes[msg.sender];
+        address option = slates[senderSlate];
+        uint256 senderDeposit = deposits[msg.sender];
+
+        if (approvals[option] < senderDeposit) {
+            hacked = true;
+        }
+    }
+}
+
+contract Handler is Test {
+    SimpleDSChief target;
+
+    constructor(SimpleDSChief target_) {
+        target = target_;
+    }
+
+    function lock(address voter, uint256 amount) public {
+        amount = bound(amount, 100 * 10**18, 1000 * 10**18);
+        vm.prank(voter);
+        target.lock(amount);
+    }
+
+    function voteYays(address voter, address yay) public returns (bytes32) {
+        vm.prank(voter);
+        return target.voteYays(yay);
+    }
+
+    function etch(address voter, address yay) public returns (bytes32 slate) {
+        vm.prank(voter);
+        return target.etch(yay);
+    }
+
+    function voteSlate(address voter, bytes32 slate) public {
+        vm.prank(voter);
+        target.voteSlate(slate);
+    }
+
+    function checkInvariant(address voter) public {
+        vm.prank(voter);
+        target.checkInvariant();
+    }
 }
 
 contract SimpleDSChiefTest is Test {
     SimpleDSChief dsChief;
-    address victim;
-    address attacker;
+    Handler handler;
 
     function setUp() public {
         dsChief = new SimpleDSChief();
-
-        victim = makeAddr("victim");
-        attacker = makeAddr("attacker");
-        targetSender(victim);
-        targetSender(attacker);
+        handler = new Handler(dsChief);
+        targetContract(address(handler));
     }
 
+    /// forge-config: default.invariant.depth = 2000
     function invariant_check_dschief() public {
-        checkInvariant();
-    }
-
-    function checkInvariant() public {
-        bytes32 senderSlate = dsChief.votes(victim);
-        address option = dsChief.slates(senderSlate);
-        uint256 senderDeposit = dsChief.deposits(victim);
-
-        require(dsChief.approvals(option) >= senderDeposit, "DSChief hacked");
+        assertFalse(dsChief.hacked());
     }
 
     function testReproduceDSChiefBugSequence() public {
+        address victim = makeAddr("victim");
+        address attacker = makeAddr("attacker");
         address yay = makeAddr("yay");
         bytes32 slate = keccak256(abi.encodePacked(yay));
 
@@ -92,7 +129,10 @@ contract SimpleDSChiefTest is Test {
         vm.startPrank(attacker);
         dsChief.voteYays(yay);
 
-        checkInvariant();
+        vm.startPrank(victim);
+        dsChief.checkInvariant();
+
+        require(!dsChief.hacked(), "DSChief hacked");
     }
 }
 
