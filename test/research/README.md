@@ -122,6 +122,38 @@ Encountered 1 failing test in test/research/harvey_foo.t.sol:HarveyFooTest
  invariant_check() (runs: 256, calls: 1275116, reverts: 11200)
 ```
 
+#### :white_check_mark: Crowdsale
+
+- Foundry (`forge test --mc CrowdsaleTest`)
+
+Note:  
+configs to set depth to 1000 to catch failing sequence needed
+
+```
+    /// forge-config: default.invariant.depth = 1000
+```
+
+```
+Failing tests:
+Encountered 1 failing test in test/research/ilf_crowdsale.sol:CrowdsaleTest
+[FAIL. Reason: assertion failed]
+        [Sequence]
+                sender=0x00000000000000000000000000000000000008d5 addr=[test/research/ilf_crowdsale.sol:Handler]0x2e234DAe75C793f67A35089C9d99245E1C58470b calldata=invest(address,uint256) args=[0x7F80C95dBd54FA21ced7A315b6BA37888AdCcbff, 1275169900567995278035420052745665669373227819380035883 [1.275e54]]
+                sender=0xfffFFFfFFfFFfFffFffFffFffffFFfFFFfffFFE1 addr=[test/research/ilf_crowdsale.sol:Handler]0x2e234DAe75C793f67A35089C9d99245E1C58470b calldata=invest(address,uint256) args=[0xE44E8e580a58429Cb453be0db0A2677898150B63, 115792089237316195423570985008687907853269984665640564039457584007913129639935 [1.157e77]]
+                sender=0x0000000000000000000000000000000000000041 addr=[test/research/ilf_crowdsale.sol:Handler]0x2e234DAe75C793f67A35089C9d99245E1C58470b calldata=invest(address,uint256) args=[0xa50d687bCBf80cE96974d29cD7babDd86963aC56, 115792089237316195423570985008687907853269984665640564039457584007913129639933 [1.157e77]]
+                sender=0x2031323834373535353130323030313936353438 addr=[test/research/ilf_crowdsale.sol:Handler]0x2e234DAe75C793f67A35089C9d99245E1C58470b calldata=invest(address,uint256) args=[0x00000000000000000000000000000000000001c2, 243]
+                sender=0x0000000000000000000000000000000000000A6F addr=[test/research/ilf_crowdsale.sol:Handler]0x2e234DAe75C793f67A35089C9d99245E1C58470b calldata=invest(address,uint256) args=[0x5E640cfcA71B2fDd53DC630bD4EfEcc3b92e1F24, 2173362503081052799 [2.173e18]]
+                sender=0xe315e768AEdE70d44993E12Ef4CFc37485c04B27 addr=[test/research/ilf_crowdsale.sol:Handler]0x2e234DAe75C793f67A35089C9d99245E1C58470b calldata=invest(address,uint256) args=[0x1C4EF3AEC2fF69f5A07A57AD6185569242eD304f, 115792089237316195423570985008687907853269984665640564039457584007913129639932 [1.157e77]]
+                sender=0x0000000000000000000000000000000000000ECF addr=[test/research/ilf_crowdsale.sol:Handler]0x2e234DAe75C793f67A35089C9d99245E1C58470b calldata=invest(address,uint256) args=[0x0000000000000000000000000000000000000fE7, 3147]
+                sender=0x0000000000000000000000000000000000000Fe6 addr=[test/research/ilf_crowdsale.sol:Handler]0x2e234DAe75C793f67A35089C9d99245E1C58470b calldata=invest(address,uint256) args=[0x0000000000000000000000000000000000000401, 4142]
+                sender=0x0000000000000000000000000000000000000237 addr=[test/research/ilf_crowdsale.sol:Handler]0x2e234DAe75C793f67A35089C9d99245E1C58470b calldata=invest(address,uint256) args=[0xe7Cc241576d9898cf35716572F7Ca21236c38b65, 2510724521397796163 [2.51e18]]
+                sender=0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496 addr=[test/research/ilf_crowdsale.sol:Handler]0x2e234DAe75C793f67A35089C9d99245E1C58470b calldata=invest(address,uint256) args=[0x01d1B08E1F8D320ea5B5CD45bB848a1E946A85C0, 392026 [3.92e5]]
+                sender=0x00000000000000000000000000000000000000C8 addr=[test/research/ilf_crowdsale.sol:Handler]0x2e234DAe75C793f67A35089C9d99245E1C58470b calldata=invest(address,uint256) args=[0x1E59C55BEF539A43726Ff9198b5F47b08fC04090, 115792089237316195423570985008687907853269984665640564039457584007913129639933 [1.157e77]]
+                sender=0x00000000000000000000000000000000000003A0 addr=[test/research/ilf_crowdsale.sol:Handler]0x2e234DAe75C793f67A35089C9d99245E1C58470b calldata=setPhase(uint256) args=[19251713690932 [1.925e13]]
+                sender=0x0000000000000000000000000000000000000cEE addr=[test/research/ilf_crowdsale.sol:Handler]0x2e234DAe75C793f67A35089C9d99245E1C58470b calldata=withdraw(address) args=[0xA36cd83E82b18fF06B6e06D412CD9EbF696ff439]
+ invariant_hacked() (runs: 256, calls: 255056, reverts: 145797)
+```
+
 #### :no_entry_sign: DSChief
 
 - Echidna (`echidna --test-mode assertion tests/solidity/research/vera_dschief.sol`)
