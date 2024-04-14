@@ -4,31 +4,14 @@ pragma solidity 0.8.18;
 import {Test} from "forge-std/Test.sol";
 
 contract SimpleDSChief {
-    bool hacked;
-    event Slate(bytes32 indexed _id);
     mapping(bytes32 => address) public slates;
     mapping(address => bytes32) public votes;
     mapping(address => uint256) public approvals;
     mapping(address => uint256) public deposits;
 
-    modifier checkInvariant() {
-        _;
-
-        bytes32 senderSlate = votes[msg.sender];
-        address option = slates[senderSlate];
-        uint256 senderDeposit = deposits[msg.sender];
-
-        hacked = approvals[option] < senderDeposit;
-    }
-
     function lock(uint256 wad) public {
         deposits[msg.sender] = add(deposits[msg.sender], wad);
         addWeight(wad, votes[msg.sender]);
-    }
-
-    function free(uint256 wad) public {
-        deposits[msg.sender] = sub(deposits[msg.sender], wad);
-        subWeight(wad, votes[msg.sender]);
     }
 
     function voteYays(address yay) public returns (bytes32) {
@@ -42,20 +25,15 @@ contract SimpleDSChief {
         bytes32 hash = keccak256(abi.encodePacked(yay));
 
         slates[hash] = yay;
-        emit Slate(hash);
 
         return hash;
     }
 
-    function voteSlate(bytes32 slate) public checkInvariant {
+    function voteSlate(bytes32 slate) public {
         uint256 weight = deposits[msg.sender];
         subWeight(weight, votes[msg.sender]);
         votes[msg.sender] = slate;
         addWeight(weight, votes[msg.sender]);
-    }
-
-    function isHacked() public view returns (bool) {
-        return hacked;
     }
 
     function addWeight(uint256 weight, bytes32 slate) internal {
@@ -79,14 +57,42 @@ contract SimpleDSChief {
 
 contract SimpleDSChiefTest is Test {
     SimpleDSChief dsChief;
+    address victim;
+    address attacker;
 
     function setUp() public {
         dsChief = new SimpleDSChief();
+
+        victim = makeAddr("victim");
+        attacker = makeAddr("attacker");
+        targetSender(victim);
+        targetSender(attacker);
     }
 
-    /// forge-config: default.invariant.runs = 1000
-    function invariant_check() public view {
-        assertFalse(dsChief.isHacked());
+    function invariant_check_dschief() public {
+        checkInvariant();
+    }
+
+    function checkInvariant() public {
+        bytes32 senderSlate = dsChief.votes(victim);
+        address option = dsChief.slates(senderSlate);
+        uint256 senderDeposit = dsChief.deposits(victim);
+
+        require(dsChief.approvals(option) >= senderDeposit, "DSChief hacked");
+    }
+
+    function testReproduceDSChiefBugSequence() public {
+        address yay = makeAddr("yay");
+        bytes32 slate = keccak256(abi.encodePacked(yay));
+
+        vm.startPrank(victim);
+        dsChief.lock(4370000);
+        dsChief.voteSlate(slate);
+
+        vm.startPrank(attacker);
+        dsChief.voteYays(yay);
+
+        checkInvariant();
     }
 }
 
