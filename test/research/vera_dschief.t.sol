@@ -16,6 +16,11 @@ contract SimpleDSChief {
         addWeight(wad, votes[msg.sender]);
     }
 
+    function free(uint256 wad) public {
+        deposits[msg.sender] = sub(deposits[msg.sender], wad);
+        subWeight(wad, votes[msg.sender]);
+    }
+
     function voteYays(address yay) public returns (bytes32) {
         bytes32 slate = etch(yay);
         voteSlate(slate);
@@ -67,52 +72,29 @@ contract SimpleDSChief {
     }
 }
 
-contract Handler is Test {
-    SimpleDSChief target;
-
-    constructor(SimpleDSChief target_) {
-        target = target_;
-    }
-
-    function lock(address voter, uint256 amount) public {
-        amount = bound(amount, 100 * 10**18, 1000 * 10**18);
-        vm.prank(voter);
-        target.lock(amount);
-    }
-
-    function voteYays(address voter, address yay) public returns (bytes32) {
-        vm.prank(voter);
-        return target.voteYays(yay);
-    }
-
-    function etch(address voter, address yay) public returns (bytes32 slate) {
-        vm.prank(voter);
-        return target.etch(yay);
-    }
-
-    function voteSlate(address voter, bytes32 slate) public {
-        vm.prank(voter);
-        target.voteSlate(slate);
-    }
-
-    function checkInvariant(address voter) public {
-        vm.prank(voter);
-        target.checkInvariant();
-    }
-}
-
 contract SimpleDSChiefTest is Test {
     SimpleDSChief dsChief;
-    Handler handler;
+
+    address[] public fixtureYay = [
+        makeAddr("yay1"),
+        makeAddr("yay2"),
+        makeAddr("yay3")
+    ];
+    bytes32[] public fixtureSlate = [
+        keccak256(abi.encodePacked(makeAddr("yay1"))),
+        keccak256(abi.encodePacked(makeAddr("yay2"))),
+        keccak256(abi.encodePacked(makeAddr("yay3")))
+    ];
 
     function setUp() public {
         dsChief = new SimpleDSChief();
-        handler = new Handler(dsChief);
-        targetContract(address(handler));
+        targetContract(address(dsChief));
+        targetSender(makeAddr("voter1"));
+        targetSender(makeAddr("voter2"));
     }
 
-    /// forge-config: default.invariant.depth = 2000
-    function invariant_check_dschief() public {
+    /// forge-config: default.invariant.depth = 500
+    function invariant_check_dschief() public view {
         assertFalse(dsChief.hacked());
     }
 

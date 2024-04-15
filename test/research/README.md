@@ -208,3 +208,19 @@ Ran 1 test for test/research/vera_dschief.t.sol:SimpleDSChiefTest
 [PASS] invariant_check() (runs: 1, calls: 30000, reverts: 8339)
 Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 19.10s (19.09s CPU time)
 ```
+
+Note:
+
+- sequence can be caught by using fixtures
+
+```
+Failing tests:
+Encountered 1 failing test in test/research/vera_dschief.t.sol:SimpleDSChiefTest
+[FAIL. Reason: assertion failed]
+        [Sequence]
+                sender=0x5AF940eE0911386bf0ABD122Dc6c03D87B076B08 addr=[test/research/vera_dschief.t.sol:SimpleDSChief]0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f calldata=lock(uint256) args=[475317125384186903101321268780756146974315014978586952145309064 [4.753e62]]
+                sender=0x5AF940eE0911386bf0ABD122Dc6c03D87B076B08 addr=[test/research/vera_dschief.t.sol:SimpleDSChief]0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f calldata=voteSlate(bytes32) args=[0x84d0f09009a1ea5ee68aee38236d9fdc4e8a0690209c5a196c7397121b1d0394]
+                sender=0xAB151c8D305D1ba43c25329c71fBc6c82f3b7c87 addr=[test/research/vera_dschief.t.sol:SimpleDSChief]0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f calldata=voteYays(address) args=[0x3F48d6B16b97c50512CAcdf03696039F115793cd]
+                sender=0x5AF940eE0911386bf0ABD122Dc6c03D87B076B08 addr=[test/research/vera_dschief.t.sol:SimpleDSChief]0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f calldata=checkInvariant() args=[]
+ invariant_check_dschief() (runs: 256, calls: 127531, reverts: 8685)
+ ```
