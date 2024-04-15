@@ -154,6 +154,20 @@ Encountered 1 failing test in test/research/ilf_crowdsale.sol:CrowdsaleTest
  invariant_hacked() (runs: 256, calls: 255056, reverts: 145797)
 ```
 
+#### :white_check_mark: Solcfuzz fun with number
+
+- Foundry (`forge test --mc FunWithNumbersTest`)
+
+```
+Failing tests:
+Encountered 1 failing test in test/research/solcfuzz_funwithnumbers.t.sol:FunWithNumbersTest
+[FAIL. Reason: assertion failed]
+        [Sequence]
+                sender=0x0000000000000000000000000000000000000755 addr=[test/research/solcfuzz_funwithnumbers.t.sol:FunWithNumbers]0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f calldata=buyTokens(uint256) args=[115792089237316195423570985008687907853269984665640564039457584007913129639935 [1.157e77]]
+                sender=0x0000000000000000000000000000000000000755 addr=[test/research/solcfuzz_funwithnumbers.t.sol:FunWithNumbers]0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f calldata=sellTokens(uint256) args=[3]
+ invariant_fun_with_numbers_not_found() (runs: 256, calls: 3836, reverts: 1907)
+```
+
 #### :no_entry_sign: DSChief
 
 - Echidna (`echidna --test-mode assertion tests/solidity/research/vera_dschief.sol`)
