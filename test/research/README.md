@@ -168,7 +168,7 @@ Encountered 1 failing test in test/research/solcfuzz_funwithnumbers.t.sol:FunWit
  invariant_fun_with_numbers_not_found() (runs: 256, calls: 3836, reverts: 1907)
 ```
 
-#### :no_entry_sign: DSChief
+#### :white_check_mark: DSChief
 
 - Echidna (`echidna --test-mode assertion tests/solidity/research/vera_dschief.sol`)
 
@@ -204,23 +204,28 @@ Seed: 3555496966892085736
 - Foundry (`forge test --mc SimpleDSChiefTest`)
 
 ```
-Ran 1 test for test/research/vera_dschief.t.sol:SimpleDSChiefTest
-[PASS] invariant_check() (runs: 1, calls: 30000, reverts: 8339)
-Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 19.10s (19.09s CPU time)
-```
-
-Note:
-
-- sequence can be caught by using fixtures
-
-```
 Failing tests:
 Encountered 1 failing test in test/research/vera_dschief.t.sol:SimpleDSChiefTest
 [FAIL. Reason: assertion failed]
         [Sequence]
-                sender=0x5AF940eE0911386bf0ABD122Dc6c03D87B076B08 addr=[test/research/vera_dschief.t.sol:SimpleDSChief]0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f calldata=lock(uint256) args=[475317125384186903101321268780756146974315014978586952145309064 [4.753e62]]
-                sender=0x5AF940eE0911386bf0ABD122Dc6c03D87B076B08 addr=[test/research/vera_dschief.t.sol:SimpleDSChief]0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f calldata=voteSlate(bytes32) args=[0x84d0f09009a1ea5ee68aee38236d9fdc4e8a0690209c5a196c7397121b1d0394]
-                sender=0xAB151c8D305D1ba43c25329c71fBc6c82f3b7c87 addr=[test/research/vera_dschief.t.sol:SimpleDSChief]0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f calldata=voteYays(address) args=[0x3F48d6B16b97c50512CAcdf03696039F115793cd]
-                sender=0x5AF940eE0911386bf0ABD122Dc6c03D87B076B08 addr=[test/research/vera_dschief.t.sol:SimpleDSChief]0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f calldata=checkInvariant() args=[]
- invariant_check_dschief() (runs: 256, calls: 127531, reverts: 8685)
+                sender=0x0000000000000000000000000000000000020000 addr=[test/research/vera_dschief.t.sol:SimpleDSChief]0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f calldata=lock(uint256) args=[19130164414648865550381306704 [1.913e28]]
+                sender=0x0000000000000000000000000000000000020000 addr=[test/research/vera_dschief.t.sol:SimpleDSChief]0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f calldata=voteSlate(bytes32) args=[0x28937fb9e290f4059bf5b5a59c839288b23307488fd87bc2aa55646fb55f1776]
+                sender=0x0000000000000000000000000000000000020000 addr=[test/research/vera_dschief.t.sol:SimpleDSChief]0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f calldata=etch(address) args=[0x0000000000000000000000000000000000000813]
+                sender=0x0000000000000000000000000000000000020000 addr=[test/research/vera_dschief.t.sol:SimpleDSChief]0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f calldata=checkInvariant() args=[]
+ invariant_check_dschief() (runs: 1000, calls: 499543, reverts: 35126)
+ ```
+
+- Foundry (`forge test --mc SimpleDSChiefWithEventTest`)
+
+```
+
+Failing tests:
+Encountered 1 failing test in test/research/vera_dschief.t.sol:SimpleDSChiefWithEventTest
+[FAIL. Reason: assertion failed]
+        [Sequence]
+                sender=0x0000000000000000000000000000000000030000 addr=[test/research/vera_dschief.t.sol:SimpleDSChiefWithEvent]0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f calldata=voteSlate(bytes32) args=[0x5b5b860e8673ced58eacc06e31297c8ebda6de8c022c38fc710e082f70f81220]
+                sender=0x0000000000000000000000000000000000030000 addr=[test/research/vera_dschief.t.sol:SimpleDSChiefWithEvent]0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f calldata=lock(uint256) args=[3038934332163482923862529389056772954 [3.038e36]]
+                sender=0x0000000000000000000000000000000000020000 addr=[test/research/vera_dschief.t.sol:SimpleDSChiefWithEvent]0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f calldata=etch(address) args=[0x00000000000000000000000000000000fFFfFFfe]
+                sender=0x0000000000000000000000000000000000030000 addr=[test/research/vera_dschief.t.sol:SimpleDSChiefWithEvent]0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f calldata=checkInvariant() args=[]
+ invariant_check_dschief_with_event() (runs: 1000, calls: 499530, reverts: 35635)
  ```
