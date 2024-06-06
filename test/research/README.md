@@ -229,3 +229,19 @@ Encountered 1 failing test in test/research/vera_dschief.t.sol:SimpleDSChiefWith
                 sender=0x0000000000000000000000000000000000030000 addr=[test/research/vera_dschief.t.sol:SimpleDSChiefWithEvent]0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f calldata=checkInvariant() args=[]
  invariant_check_dschief_with_event() (runs: 1000, calls: 499530, reverts: 35635)
  ```
+
+#### :white_check_mark: Foundry 2851 (<https://github.com/foundry-rs/foundry/issues/2851>)
+
+- Foundry (`forge test --mc BackdoorTest`)
+
+```
+
+Failing tests:
+Encountered 1 failing test in test/research/foundry_2851.sol:BackdoorTest
+[FAIL. Reason: assertion failed: 0 != 1]
+        [Sequence]
+                sender=0x000000000000000000000000000000000000013d addr=[test/research/foundry_2851.sol:Backdoor]0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f calldata=backdoor(uint256) args=[6912213124124532 [6.912e15]]
+ invariantNotZero() (runs: 256, calls: 127850, reverts: 1648)
+
+Encountered a total of 1 failing tests, 0 tests succeeded
+ ```
